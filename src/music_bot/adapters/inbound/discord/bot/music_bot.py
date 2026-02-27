@@ -5,7 +5,13 @@ from discord.ext import commands
 
 
 class MusicBot(commands.Bot):
-    def __init__(self, *, intents: Intents, dependencies: object | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        intents: Intents,
+        dependencies: object | None = None,
+        dev_guild_id: int | None = None,
+    ) -> None:
         allowed_mentions: AllowedMentions = AllowedMentions(
             everyone=False,
             roles=False,
@@ -13,7 +19,9 @@ class MusicBot(commands.Bot):
             replied_user=False,
         )
         super().__init__(command_prefix="!", intents=intents, allowed_mentions=allowed_mentions)
+
         self.dependencies: object | None = dependencies
+        self.dev_guild_id: int | None = dev_guild_id
 
     async def setup_hook(self) -> None:
         await super().setup_hook()
