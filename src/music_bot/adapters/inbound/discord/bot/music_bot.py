@@ -9,11 +9,11 @@ from music_bot.adapters.inbound.discord.cogs import PingCog
 
 class MusicBot(commands.Bot):
     def __init__(
-            self,
-            *,
-            intents: Intents,
-            dependencies: object | None = None,
-            dev_guild_id: int | None = None,
+        self,
+        *,
+        intents: Intents,
+        dependencies: object | None = None,
+        dev_guild_id: int | None = None,
     ) -> None:
         allowed_mentions: AllowedMentions = AllowedMentions(
             everyone=False,
