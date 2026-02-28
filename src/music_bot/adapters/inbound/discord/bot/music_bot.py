@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import logging
+
 import discord
 from discord import AllowedMentions, ClientUser, Intents, app_commands
 from discord.ext import commands
 
 from music_bot.adapters.inbound.discord.cogs import PingCog
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class MusicBot(commands.Bot):
@@ -39,15 +43,15 @@ class MusicBot(commands.Bot):
             self.tree.copy_global_to(guild=guild)
 
             synced = await self.tree.sync(guild=guild)
-            print(f"[discord] Synced {len(synced)} command(s) to dev guild {self.dev_guild_id}")
+            logger.info(f"Synced {len(synced)} command(s) to dev guild {self.dev_guild_id}")
         else:
             synced = await self.tree.sync()
-            print(f"[discord] Synced {len(synced)} global command(s)")
+            logger.info(f"Synced {len(synced)} global command(s)")
 
     async def on_ready(self) -> None:
         user: ClientUser | None = self.user
 
         if user is None:
-            print("Logged in, but user is not available yet.")
+            logger.warning("Logged in, but user is not available yet.")
         else:
-            print(f"Logged in as {user} (ID: {user.id})")
+            logger.info(f"Logged in as {user} (ID: {user.id})")
