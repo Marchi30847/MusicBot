@@ -4,7 +4,7 @@ from discord import Interaction, app_commands
 from discord.ext import commands
 
 
-class PingCog(commands.Cog):
+class PingCog(commands.Cog, name="Ping"):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
 

@@ -6,7 +6,7 @@ import discord
 from discord import AllowedMentions, ClientUser, Intents, app_commands
 from discord.ext import commands
 
-from music_bot.adapters.inbound.discord.cogs import PingCog
+from music_bot.adapters.inbound.discord.cogs import PingCog, VoiceCog
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -34,6 +34,7 @@ class MusicBot(commands.Bot):
         await super().setup_hook()
 
         await self.add_cog(PingCog(self))
+        await self.add_cog(VoiceCog(self))
 
         synced: list[app_commands.AppCommand]
         if self.dev_guild_id is not None:
