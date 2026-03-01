@@ -24,10 +24,13 @@ jobs:
           python -m pip install -e ".[dev]"
 
       - name: Ruff format
-        run: ruff format --check .
+        run: python -m ruff format --check .
 
       - name: Ruff lint
-        run: ruff check .
+        run: python -m ruff check .
 
       - name: Mypy
-        run: mypy src
+        run: python -m mypy src
+
+      - name: Unit tests
+        run: python -m pytest -m unit
