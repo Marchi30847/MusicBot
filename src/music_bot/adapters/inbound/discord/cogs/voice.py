@@ -7,6 +7,8 @@ from discord import Interaction, Member, VoiceChannel, VoiceProtocol, app_comman
 from discord.abc import Connectable
 from discord.ext import commands
 
+from music_bot.adapters.inbound.discord.ui import Responder
+
 
 class VoiceCog(commands.Cog, name="Voice"):
     def __init__(self, bot: commands.Bot) -> None:
@@ -14,119 +16,108 @@ class VoiceCog(commands.Cog, name="Voice"):
 
     @app_commands.command(name="join", description="Joins a voice channel")
     async def join(self, interaction: Interaction) -> None:
+        responder: Responder = Responder(interaction)
+
         if interaction.guild is None:
-            await interaction.response.send_message(
-                "This command can only be used in a server.",
-                ephemeral=True,
+            await responder.error(
+                "This command can only be used in a server."
             )
             return
 
         member: Member | None = interaction.user if isinstance(interaction.user, Member) else None
         if member is None or member.voice is None or member.voice.channel is None:
-            await interaction.response.send_message(
-                "You must be in a voice channel to use this command.",
-                ephemeral=True,
+            await responder.error(
+                "You must be in a voice channel to use this command."
             )
             return
 
         channel: Connectable = member.voice.channel
         if not isinstance(channel, VoiceChannel):
-            await interaction.response.send_message(
-                "I can only join standard voice channels.",
-                ephemeral=True,
+            await responder.error(
+                "I can only join standard voice channels."
             )
             return
 
         voice_client: VoiceProtocol | None = interaction.guild.voice_client
         if voice_client is not None and voice_client.channel == channel:
-            await interaction.response.send_message(
-                "I'm already in that channel.",
-                ephemeral=True,
+            await responder.info(
+                "I'm already in that channel."
             )
             return
 
-        await interaction.response.defer(ephemeral=True)
+        await responder.defer()
 
         if voice_client is not None:
             try:
                 await cast(discord.VoiceClient, voice_client).move_to(channel)
             except TimeoutError:
-                await interaction.followup.send(
-                    "Voice connection timed out. Please try again.",
-                    ephemeral=True,
+                await responder.error(
+                    "Voice connection timed out. Please try again."
                 )
                 return
             except discord.Forbidden:
-                await interaction.followup.send(
-                    "I don't have permission to move to that channel.",
-                    ephemeral=True,
+                await responder.error(
+                    "I don't have permission to move to that channel."
                 )
                 return
             except discord.ClientException as exc:
-                await interaction.followup.send(
-                    f"An error {exc} occurred while moving to the voice channel.",
-                    ephemeral=True,
+                await responder.error(
+                    f"An error {exc} occurred while moving to the voice channel."
                 )
                 return
 
-            await interaction.followup.send(
-                f"Moved to {channel.mention}",
-                ephemeral=True,
+            await responder.success(
+                f"Moved to {channel.mention}"
             )
             return
 
         try:
             await channel.connect()
         except TimeoutError:
-            await interaction.followup.send(
-                "Voice connection timed out. Please try again.",
-                ephemeral=True,
+            await responder.error(
+                "Voice connection timed out. Please try again."
             )
             return
         except discord.Forbidden:
-            await interaction.followup.send(
-                "I don't have permission to join that channel.",
-                ephemeral=True,
+            await responder.error(
+                "I don't have permission to join that channel."
             )
             return
         except discord.ClientException as exc:
-            await interaction.followup.send(
-                f"An error {exc} occurred while connecting to the voice channel.",
-                ephemeral=True,
+            await responder.error(
+                f"An error {exc} occurred while connecting to the voice channel."
             )
             return
 
-        await interaction.followup.send(
-            f"Connected to {channel.mention}",
-            ephemeral=True,
+        await responder.success(
+            f"Connected to {channel.mention}"
         )
 
     @app_commands.command(name="leave", description="Leaves the current voice channel")
     async def leave(self, interaction: Interaction) -> None:
+        responder: Responder = Responder(interaction)
+
         if interaction.guild is None:
-            await interaction.response.send_message(
-                "This command can only be used in a server.",
-                ephemeral=True,
+            await responder.error(
+                "This command can only be used in a server."
             )
             return
 
         voice_client: VoiceProtocol | None = interaction.guild.voice_client
         if voice_client is None:
-            await interaction.response.send_message(
-                "I'm not in a voice channel.",
-                ephemeral=True,
+            await responder.error(
+                "I'm not in a voice channel."
             )
             return
 
-        await interaction.response.defer(ephemeral=True)
+        await responder.defer()
 
         channel: Connectable = voice_client.channel
         try:
             await voice_client.disconnect(force=False)
         except discord.ClientException as exc:
-            await interaction.followup.send(
-                f"An error {exc} occurred while disconnecting from the voice channel.",
-                ephemeral=True,
+            await responder.error(
+                f"An error {exc} occurred while disconnecting from the voice channel."
             )
             return
 
@@ -136,7 +127,6 @@ class VoiceCog(commands.Cog, name="Voice"):
         else:
             label = "the voice channel"
 
-        await interaction.followup.send(
-            f"Disconnected from {label}",
-            ephemeral=True,
+        await responder.success(
+            f"Disconnected from {label}"
         )
