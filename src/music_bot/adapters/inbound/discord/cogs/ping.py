@@ -5,10 +5,12 @@ from discord.ext import commands
 
 from music_bot.adapters.inbound.discord.ui import Responder
 
+from .base import BaseCog
 
-class PingCog(commands.Cog, name="Ping"):
+
+class PingCog(BaseCog, name="Ping"):
     def __init__(self, bot: commands.Bot) -> None:
-        self.bot: commands.Bot = bot
+        super().__init__(bot)
 
     @app_commands.command(name="ping", description="Replies with Pong!")
     async def ping(self, interaction: Interaction) -> None:
