@@ -4,6 +4,7 @@ import discord
 from discord import Interaction, app_commands
 from discord.ext import commands
 
+from music_bot.adapters.inbound.discord.cogs.base import BaseCog
 from music_bot.adapters.inbound.discord.helpers import (
     disconnect_voice_client,
     ensure_voice_connected,
@@ -11,8 +12,6 @@ from music_bot.adapters.inbound.discord.helpers import (
     require_member,
 )
 from music_bot.adapters.inbound.discord.ui import Responder
-
-from .base import BaseCog
 
 
 class VoiceCog(BaseCog, name="Voice"):

@@ -3,12 +3,15 @@ from __future__ import annotations
 from discord import Interaction, app_commands
 from discord.ext import commands
 
-from .base import BaseCog
+from music_bot.adapters.inbound.discord.cogs.base import BaseCog
+
+from .deps import PlaybackDependencies
 
 
 class PlaybackCog(BaseCog, name="Playback"):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot, deps: PlaybackDependencies) -> None:
         super().__init__(bot)
+        self.deps: PlaybackDependencies = deps
 
     @app_commands.command(name="play", description="Plays a track")
     async def play(self, interaction: Interaction) -> None:

@@ -8,6 +8,9 @@ from discord.ext import commands
 
 from music_bot.adapters.inbound.discord.cogs import PingCog, PlaybackCog, VoiceCog
 
+from .dependencies import DiscordDependencies
+from .deps_mapping import to_playback_dependencies
+
 logger: logging.Logger = logging.getLogger(__name__)
 
 
@@ -16,7 +19,7 @@ class MusicBot(commands.Bot):
         self,
         *,
         intents: Intents,
-        dependencies: object | None = None,
+        dependencies: DiscordDependencies,
         dev_guild_id: int | None = None,
     ) -> None:
         allowed_mentions: AllowedMentions = AllowedMentions(
@@ -27,7 +30,7 @@ class MusicBot(commands.Bot):
         )
         super().__init__(command_prefix="!", intents=intents, allowed_mentions=allowed_mentions)
 
-        self.dependencies: object | None = dependencies
+        self.dependencies: DiscordDependencies = dependencies
         self.dev_guild_id: int | None = dev_guild_id
 
     async def setup_hook(self) -> None:
@@ -35,7 +38,7 @@ class MusicBot(commands.Bot):
 
         await self.add_cog(PingCog(self))
         await self.add_cog(VoiceCog(self))
-        await self.add_cog(PlaybackCog(self))
+        await self.add_cog(PlaybackCog(self, deps=to_playback_dependencies(self.dependencies)))
 
         synced: list[app_commands.AppCommand]
         if self.dev_guild_id is not None:
