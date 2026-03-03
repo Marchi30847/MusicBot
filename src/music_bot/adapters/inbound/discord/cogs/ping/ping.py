@@ -3,9 +3,8 @@ from __future__ import annotations
 from discord import Interaction, app_commands
 from discord.ext import commands
 
+from music_bot.adapters.inbound.discord.cogs.base import BaseCog
 from music_bot.adapters.inbound.discord.ui import Responder
-
-from .base import BaseCog
 
 
 class PingCog(BaseCog, name="Ping"):
