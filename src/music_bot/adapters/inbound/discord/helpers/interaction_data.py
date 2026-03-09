@@ -1,6 +1,13 @@
-import discord
+from __future__ import annotations
 
-from music_bot.adapters.inbound.discord.errors import NotAMemberError, NotInGuildError
+import discord
+from discord import VoiceProtocol
+
+from music_bot.adapters.inbound.discord.errors import (
+    NotAMemberError,
+    NotConnectedToVoiceError,
+    NotInGuildError,
+)
 
 
 def require_guild(interaction: discord.Interaction) -> discord.Guild:
@@ -19,3 +26,11 @@ def require_member(interaction: discord.Interaction) -> discord.Member:
         raise NotAMemberError()
 
     return member
+
+
+def require_voice_connected(guild: discord.Guild) -> discord.VoiceClient:
+    voice_protocol: VoiceProtocol | None = guild.voice_client
+    if not isinstance(voice_protocol, discord.VoiceClient):
+        raise NotConnectedToVoiceError()
+
+    return voice_protocol

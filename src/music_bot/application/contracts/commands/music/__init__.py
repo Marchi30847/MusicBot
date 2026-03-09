@@ -1,9 +1,13 @@
 from __future__ import annotations
 
-from .dequeue import DequeueCommand
-from .enqueue import EnqueueCommand
+from .now_playing import NowPlayingCommand
+from .play_url import PlayUrlCommand
+from .skip import SkipCommand
+from .stop import StopCommand
 
 __all__ = (
-    "DequeueCommand",
-    "EnqueueCommand",
+    "NowPlayingCommand",
+    "PlayUrlCommand",
+    "SkipCommand",
+    "StopCommand",
 )

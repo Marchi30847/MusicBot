@@ -28,15 +28,15 @@ class BaseCog(commands.Cog, name="BaseCog"):
             root = error.original
 
         if isinstance(root, DiscordAdapterError):
-            await responder.error(str(root), ephemeral=True)
+            await responder.error(str(root))
             return
 
         if isinstance(root, TimeoutError):
-            await responder.error("Operation timed out. Please try again.", ephemeral=True)
+            await responder.error("Operation timed out. Please try again.")
             return
 
         if isinstance(root, discord.Forbidden):
-            await responder.error("I don't have permission to do that.", ephemeral=True)
+            await responder.error("I don't have permission to do that.")
             return
 
         if isinstance(root, discord.NotFound):
@@ -45,15 +45,13 @@ class BaseCog(commands.Cog, name="BaseCog"):
 
         if isinstance(root, discord.HTTPException):
             logger.warning("Discord HTTPException: %s", root)
-            await responder.error("Discord API error occurred. Please try again.", ephemeral=True)
+            await responder.error("Discord API error occurred. Please try again.")
             return
 
         if isinstance(root, discord.ClientException):
             logger.warning("Discord ClientException: %s", root)
-            await responder.error(
-                "Discord client error occurred. Please try again.", ephemeral=True
-            )
+            await responder.error("Discord client error occurred. Please try again.")
             return
 
         logger.exception("Unhandled exception in app command", exc_info=root)
-        await responder.error("Unexpected error occurred.", ephemeral=True)
+        await responder.error("Unexpected error occurred.")

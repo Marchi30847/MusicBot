@@ -4,5 +4,6 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True, slots=True)
-class EnqueueResult:
+class PlayUrlResult:
+    enqueued: bool
     queue_size: int

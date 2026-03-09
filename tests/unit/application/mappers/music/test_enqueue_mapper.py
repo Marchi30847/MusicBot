@@ -6,7 +6,7 @@ import pytest
 from tests.typing_helper import MakeEnqueueCommand
 
 from music_bot.application.contracts.commands.music import EnqueueCommand
-from music_bot.application.mappers.music import map_enqueue_command_to_track
+from music_bot.application.mappers.music import map_play_url_command_to_track
 from music_bot.domain.music.models import Track
 
 
@@ -20,7 +20,7 @@ class TestEnqueueMapper:
             guild_id=1, url=url, requested_by=123, title=None
         )
 
-        track: Track = map_enqueue_command_to_track(cmd)
+        track: Track = map_play_url_command_to_track(cmd)
 
         assert track.url == url
         assert track.title == url
@@ -32,7 +32,7 @@ class TestEnqueueMapper:
             guild_id=1, url=url, requested_by=123, title=title
         )
 
-        track: Track = map_enqueue_command_to_track(cmd)
+        track: Track = map_play_url_command_to_track(cmd)
 
         assert track.url == url
         assert track.title == title
@@ -44,7 +44,7 @@ class TestEnqueueMapper:
             guild_id=1, url="https://example.com/a.mp3", requested_by=999, title="X"
         )
 
-        track: Track = map_enqueue_command_to_track(cmd)
+        track: Track = map_play_url_command_to_track(cmd)
 
         assert track.requested_by == 999
         assert track.duration_seconds == 0

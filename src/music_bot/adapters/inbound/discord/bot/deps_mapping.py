@@ -6,6 +6,8 @@ from music_bot.adapters.inbound.discord.cogs import PlaybackDependencies
 
 def to_playback_dependencies(root: DiscordDependencies) -> PlaybackDependencies:
     return PlaybackDependencies(
-        enqueue=root.enqueue,
-        dequeue=root.dequeue,
+        play_url=root.play_url,
+        stop=root.stop,
+        skip=root.skip,
+        now_playing=root.now_playing,
     )

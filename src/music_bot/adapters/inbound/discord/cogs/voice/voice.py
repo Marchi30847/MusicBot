@@ -29,7 +29,7 @@ class VoiceCog(BaseCog, name="Voice"):
 
         voice_client: discord.VoiceClient = await ensure_voice_connected(guild=guild, member=member)
 
-        await responder.success(f"Connected to {voice_client.channel.mention}", ephemeral=True)
+        await responder.success(f"Connected to {voice_client.channel.mention}")
 
     @app_commands.command(name="leave", description="Leaves the current voice channel")
     async def leave(self, interaction: Interaction) -> None:
