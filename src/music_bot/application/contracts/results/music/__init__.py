@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from .dequeue import DequeueResult
-from .enqueue import EnqueueResult
-from .track import TrackDto
+from .now_playing import NowPlayingResult
+from .play_url import PlayUrlResult
+from .skip import SkipResult
+from .stop import StopResult
 
 __all__ = (
-    "DequeueResult",
-    "EnqueueResult",
-    "TrackDto",
+    "NowPlayingResult",
+    "PlayUrlResult",
+    "SkipResult",
+    "StopResult",
 )

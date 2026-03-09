@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .track import TrackDto
+from music_bot.application.contracts.dtos.music import TrackDto
 
 
 @dataclass(frozen=True, slots=True)
-class DequeueResult:
-    queue_size: int
+class NowPlayingResult:
+    is_playing: bool
     track: TrackDto | None
