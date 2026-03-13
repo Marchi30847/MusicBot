@@ -6,6 +6,11 @@ from tests.typing_helper import MakeTrack
 from music_bot.domain.music.models import Queue, Track
 
 
+@pytest.fixture
+def queue() -> Queue:
+    return Queue()
+
+
 @pytest.mark.unit
 class TestQueue:
     def test_queue_empty_by_default(self, queue: Queue) -> None:

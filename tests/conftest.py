@@ -4,26 +4,25 @@ from datetime import UTC, datetime
 
 import pytest
 
-from music_bot.adapters.outbound.in_memory.music import InMemoryQueueRepository
-from music_bot.application.contracts.commands.music import DequeueCommand, EnqueueCommand
-from music_bot.application.ports.repositories.music import QueueRepository
-from music_bot.domain.music.models import Queue, Track
-from tests.typing_helper import MakeDequeueCommand, MakeEnqueueCommand, MakeTrack
-
-
-@pytest.fixture
-def queue() -> Queue:
-    return Queue()
-
-
-@pytest.fixture
-def queue_repo() -> QueueRepository:
-    return InMemoryQueueRepository()
+from music_bot.application.contracts.commands.music import (
+    NowPlayingCommand,
+    PlayUrlCommand,
+    SkipCommand,
+    StopCommand,
+)
+from music_bot.domain.music.models import Track
+from tests.typing_helper import (
+    MakeNowPlayingCommand,
+    MakePlayUrlCommand,
+    MakeSkipCommand,
+    MakeStopCommand,
+    MakeTrack,
+)
 
 
 @pytest.fixture
 def make_track() -> MakeTrack:
-    def _make_track(url: str, requested_by: int = 1) -> Track:
+    def _make_track(url: str = "https://example.com/a.mp3", requested_by: int = 1) -> Track:
         return Track(
             url=url,
             title=url,
@@ -36,29 +35,51 @@ def make_track() -> MakeTrack:
 
 
 @pytest.fixture
-def make_enqueue_command() -> MakeEnqueueCommand:
-    def _make_enqueue_command(
-        guild_id: int,
-        url: str,
-        requested_by: int,
+def make_play_url_command() -> MakePlayUrlCommand:
+    def _make_play_url_command(
+        guild_id: int = 1,
+        url: str = "https://example.com/a.mp3",
+        requested_by: int = 1,
         title: str | None = None,
-    ) -> EnqueueCommand:
-        return EnqueueCommand(
+    ) -> PlayUrlCommand:
+        return PlayUrlCommand(
             guild_id=guild_id,
             url=url,
             requested_by=requested_by,
             title=title,
         )
 
-    return _make_enqueue_command
+    return _make_play_url_command
 
 
 @pytest.fixture
-def make_dequeue_command() -> MakeDequeueCommand:
-    def _make_dequeue_command(guild_id: int, requested_by: int) -> DequeueCommand:
-        return DequeueCommand(
+def make_stop_command() -> MakeStopCommand:
+    def _make_stop_command(guild_id: int = 1, requested_by: int = 1) -> StopCommand:
+        return StopCommand(
             guild_id=guild_id,
             requested_by=requested_by,
         )
 
-    return _make_dequeue_command
+    return _make_stop_command
+
+
+@pytest.fixture
+def make_skip_command() -> MakeSkipCommand:
+    def _make_skip_command(guild_id: int = 1, requested_by: int = 1) -> SkipCommand:
+        return SkipCommand(
+            guild_id=guild_id,
+            requested_by=requested_by,
+        )
+
+    return _make_skip_command
+
+
+@pytest.fixture
+def make_now_playing_command() -> MakeNowPlayingCommand:
+    def _make_now_playing_command(guild_id: int = 1, requested_by: int = 1) -> NowPlayingCommand:
+        return NowPlayingCommand(
+            guild_id=guild_id,
+            requested_by=requested_by,
+        )
+
+    return _make_now_playing_command

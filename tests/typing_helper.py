@@ -1,22 +1,37 @@
+from __future__ import annotations
+
 from typing import Protocol
 
-from music_bot.application.contracts.commands.music import DequeueCommand, EnqueueCommand
+from music_bot.application.contracts.commands.music import (
+    NowPlayingCommand,
+    PlayUrlCommand,
+    SkipCommand,
+    StopCommand,
+)
 from music_bot.domain.music.models import Track
 
 
 class MakeTrack(Protocol):
-    def __call__(self, url: str, requested_by: int = 1) -> Track: ...
+    def __call__(self, url: str = "https://example.com/a.mp3", requested_by: int = 1) -> Track: ...
 
 
-class MakeEnqueueCommand(Protocol):
+class MakePlayUrlCommand(Protocol):
     def __call__(
         self,
-        guild_id: int,
-        url: str,
-        requested_by: int,
+        guild_id: int = 1,
+        url: str = "https://example.com/a.mp3",
+        requested_by: int = 1,
         title: str | None = None,
-    ) -> EnqueueCommand: ...
+    ) -> PlayUrlCommand: ...
 
 
-class MakeDequeueCommand(Protocol):
-    def __call__(self, guild_id: int, requested_by: int) -> DequeueCommand: ...
+class MakeStopCommand(Protocol):
+    def __call__(self, guild_id: int = 1, requested_by: int = 1) -> StopCommand: ...
+
+
+class MakeSkipCommand(Protocol):
+    def __call__(self, guild_id: int = 1, requested_by: int = 1) -> SkipCommand: ...
+
+
+class MakeNowPlayingCommand(Protocol):
+    def __call__(self, guild_id: int = 1, requested_by: int = 1) -> NowPlayingCommand: ...
