@@ -291,7 +291,7 @@ class TestGuildActor:
     async def test_service_exception_in_request_becomes_future_exception(
         self,
         playback_service: mock.Mock,
-        running_actor,
+        running_actor: GuildActor,
         make_play_url_command: MakePlayUrlCommand,
     ) -> None:
         command: PlayUrlCommand = make_play_url_command()
