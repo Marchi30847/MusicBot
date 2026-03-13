@@ -9,5 +9,5 @@ class PlayUrlUseCase:
     def __init__(self, manager: MusicActorManager) -> None:
         self._manager: MusicActorManager = manager
 
-    async def execute(self, command: PlayUrlCommand) -> PlayUrlResult:
+    async def __call__(self, command: PlayUrlCommand) -> PlayUrlResult:
         return await self._manager.get_or_create(command.guild_id).send_play_url(command)
