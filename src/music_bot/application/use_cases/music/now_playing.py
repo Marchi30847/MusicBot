@@ -9,5 +9,5 @@ class NowPlayingUseCase:
     def __init__(self, manager: MusicActorManager) -> None:
         self._manager: MusicActorManager = manager
 
-    async def execute(self, command: NowPlayingCommand) -> NowPlayingResult:
+    async def __call__(self, command: NowPlayingCommand) -> NowPlayingResult:
         return await self._manager.get_or_create(command.guild_id).send_now_playing(command)

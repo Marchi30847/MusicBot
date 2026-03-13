@@ -53,7 +53,7 @@ src = ["src"]
 extend-exclude = [".venv", "dist", "build", "__pycache__", ".mypy_cache", ".ruff_cache"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B", "UP", "RUF"]
+select = ["E", "F", "N", "I", "B", "UP", "RUF", "SIM", "ASYNC"]
 ignore = ["E501", "E203"]
 
 [tool.ruff.format]

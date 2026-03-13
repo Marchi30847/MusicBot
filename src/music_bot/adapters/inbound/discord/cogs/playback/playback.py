@@ -45,7 +45,7 @@ class PlaybackCog(BaseCog, name="Playback"):
 
         await ensure_voice_connected(guild=guild, member=member)
 
-        result: PlayUrlResult = await self.deps.play_url.execute(
+        result: PlayUrlResult = await self.deps.play_url(
             PlayUrlCommand(
                 guild_id=guild.id,
                 url=url,
@@ -75,7 +75,7 @@ class PlaybackCog(BaseCog, name="Playback"):
 
         require_voice_connected(guild)
 
-        result: SkipResult = await self.deps.skip.execute(
+        result: SkipResult = await self.deps.skip(
             SkipCommand(
                 guild_id=guild.id,
                 requested_by=member.id,
@@ -95,7 +95,7 @@ class PlaybackCog(BaseCog, name="Playback"):
 
         require_voice_connected(guild)
 
-        result: StopResult = await self.deps.stop.execute(
+        result: StopResult = await self.deps.stop(
             StopCommand(
                 guild_id=guild.id,
                 requested_by=member.id,
@@ -117,7 +117,7 @@ class PlaybackCog(BaseCog, name="Playback"):
 
         await responder.defer()
 
-        result: NowPlayingResult = await self.deps.now_playing.execute(
+        result: NowPlayingResult = await self.deps.now_playing(
             NowPlayingCommand(
                 guild_id=guild.id,
                 requested_by=member.id,
